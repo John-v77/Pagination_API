@@ -37,26 +37,41 @@ mongoose
 //     {id:16, name:'my-app-016'},
 // ]
 
-app.get('/apps', (req, res) => {
+app.get('/GetAllapps', async(req, res, next) => {
 
-    const page = req.query.page ? req.query.page : 1
-    const by = (req.query.by === 'id' || req.query.by === 'name') ? req.query.by : undefined
-    const start = req.query.start - 1
-    const end = req.query.end - 1 ? req.query.end : (appz.length-1)
-    const max = req.query.max ? req.query.max : 50
-    const order = (req.query.order === 'asc' || req.query.order === 'des') ? req.query.order : undefined
+    let results = await appzSchema.find({})
+    res.json(results)
+})
+
+
+//Function for paginated results
+// function paginatedResults(model){
+//     return async(req, res, next) => {
+
+//         const page = req.query.page ? parseInt(req.query.page) : 1
+//         const by = (req.query.by === 'id' || req.query.by === 'name') ? req.query.by : undefined
+//         const start = req.query.start - 1
+//         const end = req.query.end - 1 ? req.query.end : (appz.length-1)
+//         const max = req.query.max ? parseInt(req.query.max) : 50
+//         const order = (req.query.order === 'asc' || req.query.order === 'des') ? req.query.order : undefined
     
 
-    console.log('page',page,
-                'by', by,
-                'start', start,
-                'end', end,
-                'max', max,
-                'order', order)
+//         const startIndex = (page - 1) * max
+//         const endIndex = page * max
 
 
-    const resultApps = appz.slice(start, end)
-    res.json(resultApps)
-})
+//         console.log('page',page,
+//                     'by', by,
+//                     'start', start,
+//                     'end', end,
+//                     'max', max,
+//                     'order', order)
+
+        
+        
+//     }
+// }
+
+
 
 app.listen(PORT, () => console.log('Listening to port', PORT))
