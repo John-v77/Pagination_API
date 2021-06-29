@@ -22,14 +22,23 @@ const appz = [
 
 app.get('/apps', (req, res) => {
 
-    const by = req.query.by
-    const start = req.query.start
-    const end = req.query.end
-    const max = req.query.max
-    const order = req.query.order
+    const page = req.query.page ? req.query.page : 1
+    const by = (req.query.by === 'id' || req.query.by === 'name') ? req.query.by : undefined
+    const start = req.query.start - 1
+    const end = req.query.end - 1 ? req.query.end : (appz.length-1)
+    const max = req.query.max ? req.query.max : 50
+    const order = (req.query.order === 'asc' || req.query.order === 'des') ? req.query.order : undefined
     
-    const resultApps = appz.slice(start, end)
 
+    console.log('page',page,
+                'by', by,
+                'start', start,
+                'end', end,
+                'max', max,
+                'order', order)
+
+
+    const resultApps = appz.slice(start, end)
     res.json(resultApps)
 })
 
