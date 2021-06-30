@@ -22,8 +22,8 @@ app.get('/apps', async(req, res, next) => {
         const page = req.query.page ? parseInt(req.query.page) : 1
 
         const by = (req.query.by === 'id' || req.query.by === 'name') ? req.query.by : undefined
-        const start = req.query.start - 1
-        const end = req.query.end - 1 ? req.query.end : (appzSchema.countDocuments().exec() - 1)
+        const start = req.query.start ? req.query.start - 1 : undefined
+        const end = req.query.end ? req.query.end - 1 : undefined
         const max = req.query.max ? parseInt(req.query.max) : 50
 
         const order = req.query.order === 'asc' ? 1 
@@ -49,7 +49,34 @@ app.get('/apps', async(req, res, next) => {
             }
         }
 
-    results.results = await appzSchema.find({}).sort({"name":order}).skip(startIndex).limit(max)
+        //Pagination logic  - 
+        let stringBuilder = 'appzSchema.find({})'
+
+        if(by) stringBuilder += `.sort({ ${by} : ${order} })`
+
+        if(start) stringBuilder += `.skip(${start})`
+
+        //-------------------------------
+        if(end){
+            if(start && (end > start)){
+                //if #end is bigger then #max, #max will take precedence
+                let limitZ = Math.min(max, end)
+                stringBuilder += `.limit(${limitZ})`
+                }
+        }else{
+            stringBuilder += `.limit(${max})`
+        }
+        //-------------------------------
+        
+
+
+        console.log("stringBuilder", stringBuilder)
+
+
+
+
+    results.results = await eval(stringBuilder)
+    // .sort({by:order}).skip(start).limit(max)
     res.json(results)
 })
 
