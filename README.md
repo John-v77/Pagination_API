@@ -16,7 +16,7 @@ To implement this solution the app get it params from the web query/api request,
 The request is transmited on the back end through Express framework:  'req.query'  line: 20 (index.js),
 all the params then are asigned to diferent variables destructuring the object/dictionary 'req.query'
 
-All this new variable are then passed on MondoDB query: appzSchema.find({}).sort({"name":order}).skip(startIndex).limit(max)
+All this new variable are then passed on MondoDB query using a string builder and evaluating the string after the pagination logic: appzSchema.find({}).sort({"name":order}).skip(startIndex).limit(max)
 where: 'appzSchema' is the model it is used for this data base. 
         .find() is the action to retrieve the data
         and sort(), skip(), limit()  are aditional params to this query. this their argument is null/undefined, they will ignored in the query. 
