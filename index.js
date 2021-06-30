@@ -17,27 +17,29 @@ mongoose
     .catch((err) => console.error('Error connecting to MongoDB', err))
 
 
-//Seeding the data base
-
-const db = mongoose.connection
-db.once('open', async ()=>{
-    if(await appzSchema.countDocuments().exec() > 0) return
-
-    for(i=0; i<51; i++){
-        await appzSchema.create({
-            name:`my-app-0${i+1}`
-        })
-    }
-})
-
- 
 
 app.get('/GetAllapps', async(req, res, next) => {
 
-    let results = await appzSchema.find({})
+        const page = req.query.page ? parseInt(req.query.page) : 1
+        const by = (req.query.by === 'id' || req.query.by === 'name') ? req.query.by : undefined
+        const start = req.query.start - 1
+        // const end = req.query.end - 1 ? req.query.end : (appz.length-1)
+        const max = req.query.max ? parseInt(req.query.max) : 50
+
+        const order = req.query.order === 'asc' ? 1 
+                        : req.query.order === 'des' ? -1 
+                        : 0
+    
+
+        const startIndex = (page - 1) * max
+        const endIndex = page * max
+
+
+
+    console.log('order', order)
+    let results = await appzSchema.find({}).sort({"name":order}).skip(startIndex).limit(max)
     res.json(results)
 })
-
 
 
 app.listen(PORT, () => console.log('Listening to port', PORT))
