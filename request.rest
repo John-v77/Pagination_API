@@ -1,1 +1,8 @@
-GET http://localhost:5000/GetAllapps
+GET http://localhost:5000/apps?by=name&order=des&max=5&end=2
+
+
+# GET http://localhost:5000/apps?by=id&order=asc&start=5&end=2
+
+# GET http://localhost:5000/apps?
+
+# GET http://localhost:5000/apps?by=id
