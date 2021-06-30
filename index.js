@@ -17,7 +17,6 @@ mongoose
     .catch((err) => console.error('Error connecting to MongoDB', err))
 
 
-
 app.get('/GetAllapps', async(req, res, next) => {
 
         const page = req.query.page ? parseInt(req.query.page) : 1
@@ -33,11 +32,26 @@ app.get('/GetAllapps', async(req, res, next) => {
 
         const startIndex = (page - 1) * max
         const endIndex = page * max
+        const results = {}
+        
+        if(startIndex <  await appzSchema.countDocuments().exec()){
+            results.next = {
+            page: page+1,
+            limit: max
+            }
+        }
+
+        if(startIndex > 0){
+            results.previous = {
+                page: page-1,
+                limit: max
+            }
+        }
 
 
 
     console.log('order', order)
-    let results = await appzSchema.find({}).sort({"name":order}).skip(startIndex).limit(max)
+    results.results = await appzSchema.find({}).sort({"name":order}).skip(startIndex).limit(max)
     res.json(results)
 })
 
