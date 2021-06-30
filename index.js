@@ -17,12 +17,13 @@ mongoose
     .catch((err) => console.error('Error connecting to MongoDB', err))
 
 
-app.get('/GetAllapps', async(req, res, next) => {
+app.get('/apps', async(req, res, next) => {
 
         const page = req.query.page ? parseInt(req.query.page) : 1
+
         const by = (req.query.by === 'id' || req.query.by === 'name') ? req.query.by : undefined
         const start = req.query.start - 1
-        // const end = req.query.end - 1 ? req.query.end : (appz.length-1)
+        const end = req.query.end - 1 ? req.query.end : (appzSchema.countDocuments().exec() - 1)
         const max = req.query.max ? parseInt(req.query.max) : 50
 
         const order = req.query.order === 'asc' ? 1 
@@ -48,9 +49,6 @@ app.get('/GetAllapps', async(req, res, next) => {
             }
         }
 
-
-
-    console.log('order', order)
     results.results = await appzSchema.find({}).sort({"name":order}).skip(startIndex).limit(max)
     res.json(results)
 })
