@@ -4,7 +4,9 @@ const app = express()
 const dotenv = require('dotenv')
 require('dotenv').config()
 
-const PORT = process.env.PORT || 5000
+// const PORT = process.env.PORT || 5000
+
+const PORT = process.env.NODE_ENV === 'test' ? 5001 : process.env.PORT || 5000
 
 const mongoose = require('mongoose')
 
@@ -67,4 +69,6 @@ app.get('/apps', async(req, res, next) => {
 })
 
 
-app.listen(PORT, () => console.log('Listening to port', PORT))
+const server = app.listen(PORT, () => console.log('Listening to port', PORT))
+
+module.exports = {app, server}

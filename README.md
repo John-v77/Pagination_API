@@ -21,6 +21,7 @@ where: 'appzSchema' is the model it is used for this data base.
         .find() is the action to retrieve the data
         and sort(), skip(), limit()  are aditional params to this query. this their argument is null/undefined, they will ignored in the query. 
 
+Data was populated using Schema.create.
 
 Thinking that the data will be display on diferent pages, I implemented a new param: 'page', 
 and added 'next page', 'previous page' that used 'max' param to split the pages and also checks if we are at the end of the boundry
