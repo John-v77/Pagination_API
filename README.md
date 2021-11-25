@@ -38,8 +38,7 @@ Thinking that the data will be display on different pages, I implemented a new p
 
 The logic of this application is done when we assigning the params to new variables, using the ternary operator is check if the params exist in the query, if so it is assign to the variable if not, the variable get a default value that can be ignored by the query to the data base.
 
-==============
-Dependencies:
+## Dependencies:
 ______________
 
 `dotenv`,
